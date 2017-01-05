@@ -7,8 +7,9 @@ public class Encrypter {
 		int step1;
 		String viesti;
 		boolean contProg = true;
+		String[] cuesForCracking = {"the", "ck", "an", "st", "be", "re", "ou", "th", "om", "ce", "do", "ing", "in", "on", "at", "of"};
 		while (contProg) {
-			System.out.println("Gimme sometin' to encrypt!");
+			System.out.println("Gimme sometin' to encrypt (or type insert \"q\" to stop)!");
 			message = sc.nextLine();
 			if (message.equals("q")) {
 				contProg = false;
@@ -19,8 +20,12 @@ public class Encrypter {
 			viesti = encryptCeasar(message, step1);
 			System.out.println(viesti);
 
-			System.out.println("Cracking code: \n" + viesti);
-			crackCeasar(viesti);
+
+
+			String[][] lista = rateArrayOfMessages(createCrackedMessages(viesti), cuesForCracking);
+			
+			
+			System.out.println("My wild guess will be:\n" + findBest(lista));
 		}
 		
 	}
@@ -69,10 +74,45 @@ public class Encrypter {
 		return target.toString();
 	}
 
-	public static void crackCeasar(String toCrack) {
-		for (int i = 1; i < 26; i++) {
-			System.out.println(decryptCeasar(toCrack, i));
+	public static String[][] createCrackedMessages(String toCrack) {
+		String[][] list = new String[26][2];
+
+		for (int i = 0; i < 26; i++) {
+			list[i][0] = decryptCeasar(toCrack, i);
 		}
+		return list;
+	}
+
+	public static int rateMessage(String mess, String[] cues) {
+		int cuesFound = 0;
+		for (int i = 0; i < cues.length; i++) {
+			if (mess.contains(cues[i])) {
+				cuesFound++;
+			}
+		}
+		return cuesFound;
+	}
+
+	public static String[][] rateArrayOfMessages(String[][] list, String[] cues) {
+		for (int i = 0; i < list.length; i++) {
+			list[i][1] = Integer.toString(rateMessage(list[i][0], cues));
+		}
+
+		return list;
+	}
+
+	public static String findBest(String[][] list) {
+		int score = -1;
+		int current = 0;
+		String highest = "";
+		for (int i = 0; i < list.length; i++) {
+			current = Integer.parseInt(list[i][1]);
+			if (current > score) {
+				score = current;
+				highest = list[i][0];
+			}
+		}
+		return highest;
 	}
 
 }
