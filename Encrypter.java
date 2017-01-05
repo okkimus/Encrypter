@@ -5,6 +5,7 @@ public class Encrypter {
 		Scanner sc = new Scanner(System.in);
 		String message;
 		int step1;
+		String viesti;
 		boolean contProg = true;
 		while (contProg) {
 			System.out.println("Gimme sometin' to encrypt!");
@@ -15,10 +16,13 @@ public class Encrypter {
 			System.out.println("Gimme number for encrypting");
 			step1 = sc.nextInt();
 			sc.nextLine();
-			System.out.println(encryptCeasar(message, step1));
-		}
-		//System.out.println(decryptCeasar(encryptCeasar(message, step1), step1));
+			viesti = encryptCeasar(message, step1);
+			System.out.println(viesti);
 
+			System.out.println("Cracking code: \n" + viesti);
+			crackCeasar(viesti);
+		}
+		
 	}
 
 	public static String encryptCeasar(String toDecrypt, int step) {
@@ -63,6 +67,12 @@ public class Encrypter {
 		}
 
 		return target.toString();
+	}
+
+	public static void crackCeasar(String toCrack) {
+		for (int i = 1; i < 26; i++) {
+			System.out.println(decryptCeasar(toCrack, i));
+		}
 	}
 
 }
