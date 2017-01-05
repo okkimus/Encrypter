@@ -3,14 +3,21 @@ import java.util.Scanner;
 public class Encrypter {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-
-		System.out.println("Gimme sometin' to encrypt!");
-		String message = sc.nextLine();
-		System.out.println("Gimme number for encrypting");
-		int step1 = sc.nextInt();
-
-		System.out.println(encryptCeasar(message, step1));
-		System.out.println(decryptCeasar(encryptASCII(message, step1), step1));
+		String message;
+		int step1;
+		boolean contProg = true;
+		while (contProg) {
+			System.out.println("Gimme sometin' to encrypt!");
+			message = sc.nextLine();
+			if (message.equals("q")) {
+				contProg = false;
+			}
+			System.out.println("Gimme number for encrypting");
+			step1 = sc.nextInt();
+			sc.nextLine();
+			System.out.println(encryptCeasar(message, step1));
+		}
+		//System.out.println(decryptCeasar(encryptCeasar(message, step1), step1));
 
 	}
 
@@ -26,7 +33,7 @@ public class Encrypter {
 				target.setCharAt(i, ' ');
 			} else {
 				indexOfNewChar = chars.indexOf(target.charAt(i)) + step;
-				while (indexOfNewChar > charsAmount) {
+				while (indexOfNewChar >= charsAmount) {
 					indexOfNewChar -= charsAmount;
 				}
 				target.setCharAt(i, chars.charAt(indexOfNewChar));
