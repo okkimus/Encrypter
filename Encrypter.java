@@ -24,8 +24,10 @@ public class Encrypter {
 
 			String[][] lista = rateArrayOfMessages(createCrackedMessages(viesti), cuesForCracking);
 			
-			
-			System.out.println("My wild guess will be:\n" + findBest(lista));
+			orderArray(lista, 0);
+
+			System.out.println("Was it \""+ lista[0][0] + "\"?");
+
 		}
 		
 	}
@@ -101,18 +103,36 @@ public class Encrypter {
 		return list;
 	}
 
-	public static String findBest(String[][] list) {
+	public static int findBest(String[][] list, int start) {
 		int score = -1;
 		int current = 0;
-		String highest = "";
-		for (int i = 0; i < list.length; i++) {
+		int highest = 0;
+		for (int i = start; i < list.length; i++) {
 			current = Integer.parseInt(list[i][1]);
 			if (current > score) {
 				score = current;
-				highest = list[i][0];
+				highest = i;
 			}
 		}
 		return highest;
+	}
+
+	public static void orderArray(String[][] list, int start) {
+		if (start < list.length - 1) {
+			int a = findBest(list, start);
+			String toSwitch = list[start][0];
+			String toScore = list[start][1];
+
+			//take value with the highest score to the "beginning" of the list
+			list[start][0] = list[a][0];
+			list[start][1] = list[a][1];
+			//and replace the switched value with the value from the beginning
+			list[a][0] = toSwitch;
+			list[a][1] = toScore;
+			
+			//recursive call to sort whole list
+			orderArray(list, start + 1);
+		}
 	}
 
 }
